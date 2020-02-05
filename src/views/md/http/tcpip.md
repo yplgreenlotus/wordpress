@@ -11,7 +11,7 @@ TCP 是 Transmission Control Protocol 的缩写，意思就是 “传输控制�
 
 TCP/IP 协议总共分成了 4 层 分别是：链接层、网际层、传输层、应用层 , 如下图：
 
-![](./img/protocol_01.jpg)
+![](./img/tcpip_01.jpg)
 
 
 > #### 第一层：链接层
@@ -34,7 +34,7 @@ IP协议就处在这一层，因为IP协议定义了IP地址，所以在链接�
 
  OSI 全称是 “开放式系统互联通信参考模型（Open stystem Interconnection Reference Model）” , TCP/IP 发明于1970年代，当时除了TCP/IP协议还有很多其他的协议，整个网络世界比较混乱，国际标准组织（OSI）为了有个统一的标准设计出了这个网络分层模型，用这框架模型了统一各种网络协议。OSI网络分层模型分了7层，从下到上分别是：
 
- ![](./img/protocol_02.jpg)
+ ![](./img/tcpip_02.jpg)
 
  第一层：**物理层**，网络的物理形式，例如：电缆、光纤、网卡、集线器等等，TCP/IP 是一个纯软件的栈，没有这一层，相对于没有最根基的网络物理形式，而OSI补足了这一点
 
@@ -52,7 +52,7 @@ IP协议就处在这一层，因为IP协议定义了IP地址，所以在链接�
 
 > #### TCP/IP分层 与 OSI网络分层 的对应关系
 
- ![](./img/protocol_03.png)
+ ![](./img/tcpip_03.png)
 
  > #### TCP/IP协议栈的工作方式
 
@@ -84,7 +84,7 @@ IP协议就处在这一层，因为IP协议定义了IP地址，所以在链接�
  
  具体的打包拆包流程图如下：
 
-  ![](./img/protocol_04.png)
+  ![](./img/tcpip_04.png)
 
   注意：
   

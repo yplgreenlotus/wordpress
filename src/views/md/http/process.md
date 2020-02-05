@@ -57,11 +57,11 @@ HTTP协议是属于应用层的协议，它是建立在TCP/TP协议的基础之�
 
 **如图：Wireshark工具的捕获的数据包**
 
-![](./img/happening_01.png)
+![](./img/process_01.png)
 
 **注意：SYN、ACK、FIN 都是在 TCP协议层 与 服务器层 发生，对于 HTTP 层是透明的**
 
-![](./img/happening_02.png)
+![](./img/process_02.png)
 
 
 
