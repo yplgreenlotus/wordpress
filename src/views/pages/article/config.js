@@ -1,0 +1,5 @@
+export default {
+  REJECTED: 'VISIT_REJECTED',
+  NOTFOUND: 'MODULE_NOT_FOUND',
+  ERROR: 'VISIT_ERROR'
+}
