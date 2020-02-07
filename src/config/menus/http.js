@@ -25,4 +25,7 @@ export default [{
 }, {
   name: 'http状态码',
   path: '/http/code'
+}, {
+  name: 'http的特点',
+  path: '/http/feature'
 }]
