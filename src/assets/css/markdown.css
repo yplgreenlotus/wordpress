@@ -683,6 +683,10 @@
   max-width: 100%;
 }
 
+.markdown-body img[align=center] {
+  text-align: center;
+}
+
 .markdown-body img[align=right] {
   padding-left: 20px;
 }

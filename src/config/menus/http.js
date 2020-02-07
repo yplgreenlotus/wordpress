@@ -5,6 +5,9 @@ export default [{
   name: 'http是什么？',
   path: '/http/info'
 }, {
+  name: 'URI（统一资源标识符）',
+  path: '/http/uri'
+}, {
   name: 'TCP/IP 协议',
   path: '/http/tcpip'
 }, {
