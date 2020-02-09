@@ -30,6 +30,7 @@ export default {
         const doc = new Doc().$mount()
         document.getElementById('article').innerHTML = ''
         document.getElementById('article').appendChild(doc.$el)
+        window.scrollTo(0, 0)
       } catch (error) {
         this.redirect(error)
       }

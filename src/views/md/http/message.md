@@ -91,6 +91,94 @@ HTTP头字段非常灵活，它不仅可以有标准的已有头，如：host、
 
 5、头字段原则上是不允许重复，除非字段本身语义允许，例如：Set-Cookie 字段就允许重复
 
+> #### HTTP协议的实体数据（Body）
+
+HTTP协议是应用层的协议，构建在TCP/IP之上，TCP/IP关注的是传输，它并不关心body的数据结构内容等，所以这份责任就落到了 HTTP 头上，毕竟没有规矩就不成方圆。HTTP协议是请求/应答的模式，浏览器发出一个请求，服务器就要响应这个请求，那么在这 “一问一答” 的通信过程中必定会涉及到通信的内容的 “语言”、“格式类型”，“编码方式” 等问题，否则浏览器要怎么解析服务器响应的数据呢 ？很显然这是一个双方 **协商** 的过程，浏览器必须要把他期望的内容的 “语言”、“格式类型”，“编码方式” 等信息告诉服务器进行 **协商**，然后服务器尽量根据浏览器的要求返回浏览器期望的数据内容形式，由于HTTP著名的 “header + body” 格式的报文，**协商** 的具体要求只能通过 header 来完成
+
+1、**HTTP规定了使用 “Accept” 头字段，表示客户端可以理解的 MIME Type ，服务器会用 “Content-Type” 头字段来表示返回内容使用的MIME Type** 
+
+```text
+请求：
+Accept: text/html,application/xml,image/webp,image/png
+
+响应：
+Content-Type: text/html
+```
+
+**温馨提示**：HTTP协议的 “Content-Type” 头字段在 “请求头”、“响应头” 上都有出现，在 “请求头” 表示以什么样的格式发送报文给服务器，通常在 "POST" 请求里面这个头字段是必须要有的，“GET” 请求在请求体为空的情况可以没有这个头字段，Axios库就是这样干的
+
+2、**HTTP规定了使用 “Accept-Charset” 头字段，表示客户端可以理解的编码方式 ，服务器会用 “Content-Type” 头字段添加 “charset=xxx” 来表示返回内容使用的编码方式** 
+
+
+```text
+请求：
+Accept-Charset: gbk, uft-8
+
+响应：
+Content-Type: text/html; charset=utf-8
+```
+
+3、**HTTP规定了使用 “Accept-Encoding” 头字段，表示客户端可以理解的压缩方式 ，服务器会用 “Content-Encoding” 头字段来表示返回内容使用的压缩方式** 
+
+```text
+请求：
+Accept-Encoding: gzip, deflate, br
+
+响应：
+Content-Encoding: gzip
+```
+
+4、**HTTP规定了使用 “Accept-Language” 头字段，表示客户端可以理解的语言 ，服务器会用 “Content-Language” 头字段来表示返回内容使用的语言** 
+
+```text
+请求：
+Accept-Language: zh-CN, zh, en
+
+响应：
+Content-Language: zh-CN
+```
+
+5、内容协商的权重值
+
+在 HTTP 协议里面用 Accept、Accept-Encoding、Accept-Language 等头部字段进行内容协商的时候，可以使用特殊的“q”参数表示权重来设定优先级，
+q 是 “quality factor” 的意思，具体的形式是数据类型或语言代码后面添加 “;”，然后是 “q=value” , value 的最大值是 1（默认值），最小值是 0.01 ， 0 表示拒绝
+
+```text
+Accept: text/html,application/json;q=0.9,*/*;q=0.8
+```
+
+5、内容协商的结果
+
+内容协商的过程是根据服务器而定的，因为每个服务器的算法可能都不一样，通常服务器会在响应头里面加个 “Vary” 字段，记录服务器在内容协商是参与的请求头字段，给出一点信息：
+
+```text
+Vary: Accept-Encoding,User-Agent,Accept
+```
+
+表示服务器根据 “Accept-Encoding,User-Agent,Accept” 这个几个字段决定发回什么样的响应报文
+
+
+**HTTP 里经常遇到的几个类别（MIME type）：**
+
+1、**text**：即文本格式的可读数据，我们最熟悉的应该就是 text/html 了，表示超文本文档，此外还有纯文本 text/plain、样式表 text/css 等。
+
+2、**image**：即图像文件，有 image/gif、image/jpeg、image/png 等
+
+2、**audio/video**：音频和视频数据，例如 audio/mpeg、video/mp4 等
+
+3、**application**：数据格式不固定，可能是文本也可能是二进制，必须由上层应用程序来解释。常见的有 application/json，application/javascript、application/pdf 等
+
+4、如果实在是不知道数据是什么类型，像刚才说的“黑盒”，就会是 application/octet-stream，即不透明的二进制数据
+
+仅有 MIME type 还不够，因为 HTTP 在传输时为了节约带宽，有时候还会压缩数据，为了不要让浏览器继续 “猜”，还需要有一个“Encoding type”，告诉数据是用的什么编码格式，这样对方才能正确解压缩，还原出原始的数据。比起 MIME type 来说，Encoding type 就少了很多，常用的只有下面三种：
+
+1、**gzip**：GNU zip 压缩格式，也是互联网上最流行的压缩格式；
+
+2、**deflate**：zlib（deflate）压缩格式，流行程度仅次于 gzip；
+
+3、**br**：一种专门为 HTTP 优化的新压缩算法（Brotli）。数据类型使用的头字段
+
+
 > #### 常用的头字段
 
 HTTP协议规定了非常多的头部字段，以实现各种各样的功能，但基本上可以分为4大类：

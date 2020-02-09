@@ -28,4 +28,16 @@ export default [{
 }, {
   name: 'http的特点',
   path: '/http/feature'
+}, {
+  name: 'http大文件传输',
+  path: '/http/bigFiles'
+}, {
+  name: 'http链接管理',
+  path: '/http/connection'
+}, {
+  name: 'http重定向',
+  path: '/http/redirect'
+}, {
+  name: 'http的Cookie机制',
+  path: '/http/cookie'
 }]
