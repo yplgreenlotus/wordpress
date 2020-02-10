@@ -40,4 +40,7 @@ export default [{
 }, {
   name: 'http的Cookie机制',
   path: '/http/cookie'
+}, {
+  name: 'http缓存控制',
+  path: '/http/cache'
 }]
