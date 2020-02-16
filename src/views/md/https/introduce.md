@@ -35,6 +35,8 @@ HTTPS 能够鉴别危险的网站，并且尽最大的可能保证你的上网�
 
 看了图就知道了，其实 “HTTP” 还是原来的 “HTTP”，只是跑着在了 “SSL/TLS” 上，看来要搞懂 “HTTPS” 必须的先知道 “SSL/TLS” 是怎么回事。
 
+当然除了“HTTP”，SSL/TLS 也可以承载其他的应用协议，例如：FTP => FTPS 、LADP => LADPS 等
+
 > #### SSL/TLS
 
 SSL（Secure Sockets Layer）是安全套接层，网景公司在 1994 年发明，公开的版本有 v2、v3 两个版本，其中 v1 有严重的缺陷从未公开过

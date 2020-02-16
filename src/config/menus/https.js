@@ -5,7 +5,7 @@ export default [{
   name: 'https 对称加密',
   path: '/https/encryption'
 }, {
-  name: 'https 数字签名',
+  name: 'https 签名与证书',
   path: '/https/signature'
 }, {
   name: 'https 连接过程',
