@@ -2,6 +2,7 @@ import javascript from './menus/javascript'
 import node from './menus/node'
 import http from './menus/http'
 import https from './menus/https'
+import webpack from './menus/webpack'
 import vue from './menus/vue'
 import react from './menus/react'
 import introduce from './menus/introduce'
@@ -28,6 +29,10 @@ export default [{
   name: 'https',
   path: '/https',
   children: [...https]
+}, {
+  name: 'webpack',
+  path: '/webpack',
+  children: [...webpack]
 }, {
   name: 'node',
   path: '/node',
