@@ -1,21 +1,5 @@
 # Webpack 打包后执行原理
 
-index.js：
-
-![](./img/base_01.png)
-
-test.js：
-
-![](./img/base_02.png)
-
-webpack.config.js
-
-![](./img/base_03.png)
-
-webpack 打包后的文件主要代码：
-
-![](./img/base_04.png)
-
 通过上面的代码可以看出，打包后的代码主要有如下几个部分：
 
 1、打包后产出了一个包含所有依赖模块的对象，然后传给了自执行函数
