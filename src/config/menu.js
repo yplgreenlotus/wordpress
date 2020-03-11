@@ -1,26 +1,18 @@
-import javascript from './menus/javascript'
-import node from './menus/node'
 import http from './menus/http'
 import https from './menus/https'
 import webpack from './menus/webpack'
-import vue from './menus/vue'
-import react from './menus/react'
 import introduce from './menus/introduce'
-import dataStructure from './menus/dataStructure'
-import designPattern from './menus/designPattern'
+// import javascript from './menus/javascript'
+// import node from './menus/node'
+// import vue from './menus/vue'
+// import react from './menus/react'
+// import dataStructure from './menus/dataStructure'
+// import designPattern from './menus/designPattern'
 
 export default [{
   name: '简介',
   path: '/introduce',
   children: [...introduce]
-}, {
-  name: 'javascript',
-  path: '/javascript',
-  children: [...javascript]
-}, {
-  name: 'dom',
-  path: '/dom',
-  children: [...node]
 }, {
   name: 'http',
   path: '/http',
@@ -33,60 +25,71 @@ export default [{
   name: 'webpack',
   path: '/webpack',
   children: [...webpack]
-}, {
-  name: 'node',
-  path: '/node',
-  children: [...node]
-}, {
-  name: 'vue',
-  path: '/vue',
-  children: [...vue]
-}, {
-  name: 'react',
-  path: '/react',
-  children: [...react]
-}, {
-  name: 'react native',
-  path: '/reactnative',
-  children: []
-}, {
-  name: 'flutter',
-  path: '/flutter',
-  children: []
-}, {
-  name: '数据结构',
-  path: '/dataStructure',
-  children: [...dataStructure]
-}, {
-  name: '设计模式',
-  path: '/designPattern',
-  children: [...designPattern]
-}, {
-  name: '网络编程',
-  path: '/network',
-  children: []
-}, {
-  name: '小程序',
-  path: '/minprogram',
-  children: []
-}, {
-  name: '微信公众号',
-  path: '/wechat',
-  children: []
-}, {
-  name: '数据库',
-  path: '/database',
-  children: []
-}, {
-  name: '部署',
-  path: '/release',
-  children: []
-}, {
-  name: '工程化',
-  path: '/engineering',
-  children: []
-}, {
-  name: '单元测试',
-  path: '/unit',
-  children: []
-}]
+}
+
+// , {
+//   name: 'javascript',
+//   path: '/javascript',
+//   children: [...javascript]
+// }, {
+//   name: 'dom',
+//   path: '/dom',
+//   children: [...node]
+// }, {
+//   name: 'node',
+//   path: '/node',
+//   children: [...node]
+// }, {
+//   name: 'vue',
+//   path: '/vue',
+//   children: [...vue]
+// }, {
+//   name: 'react',
+//   path: '/react',
+//   children: [...react]
+// }, {
+//   name: 'react native',
+//   path: '/reactnative',
+//   children: []
+// }, {
+//   name: 'flutter',
+//   path: '/flutter',
+//   children: []
+// }, {
+//   name: '数据结构',
+//   path: '/dataStructure',
+//   children: [...dataStructure]
+// }, {
+//   name: '设计模式',
+//   path: '/designPattern',
+//   children: [...designPattern]
+// }, {
+//   name: '网络编程',
+//   path: '/network',
+//   children: []
+// }, {
+//   name: '小程序',
+//   path: '/minprogram',
+//   children: []
+// }, {
+//   name: '微信公众号',
+//   path: '/wechat',
+//   children: []
+// }, {
+//   name: '数据库',
+//   path: '/database',
+//   children: []
+// }, {
+//   name: '部署',
+//   path: '/release',
+//   children: []
+// }, {
+//   name: '工程化',
+//   path: '/engineering',
+//   children: []
+// }, {
+//   name: '单元测试',
+//   path: '/unit',
+//   children: []
+// }
+]

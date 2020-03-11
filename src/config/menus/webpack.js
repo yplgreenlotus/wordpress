@@ -4,4 +4,7 @@ export default [{
 }, {
   name: 'webpack配置',
   path: '/webpack/config'
+}, {
+  name: 'webpack loader',
+  path: '/webpack/loader'
 }]
