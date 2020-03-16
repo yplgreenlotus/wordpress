@@ -7,4 +7,7 @@ export default [{
 }, {
   name: 'webpack loader',
   path: '/webpack/loader'
+}, {
+  name: 'tapable',
+  path: '/webpack/tapable'
 }]
