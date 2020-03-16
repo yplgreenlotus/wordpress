@@ -8,7 +8,7 @@
 
 #### 2、loader的分类
 
-1、同步异步的维度：loader 可以分为 同步loader、异步loader
+1、同步异步的维度：loader 可以分为 同步loader 与 异步loader
 
 ```javascript
 // 同步 loader
@@ -36,9 +36,30 @@ module.exports = function(resource,other){
 
 ```
 
-2、执行顺序的维度：pre loader、normal loader 、post loader
+2、执行顺序的维度有 pre loader、normal loader 、post loader等 3 种
 
+```javascript
+// 1、从右到左 或者 从下到上 less-loader -> postcss-loader -> css-loader -> vue-style-loader
+{
+  test: /\.less$/,
+  use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'less-loader']
+}
+// 或者
+{
+  test: /\.less$/,
+  use: [{
+   loader:'vue-style-loader'
+  },{
+   loader:'css-loader'
+  },{
+   loader:'postcss-loader'
+  },{
+   loader:'less-loader'
+  }]
+}
+// 通过 onforce
 
+```
 
 3、内联loader
 
