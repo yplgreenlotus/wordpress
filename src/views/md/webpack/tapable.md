@@ -400,7 +400,122 @@ test.listenerPromise()
 test.trigger()
 ```
 
-#### 6、AsyncSereisHook 
+#### 6、AsyncParallelBailHook
+
+AsyncParallelBailHook 异步并行熔断，只要任何一个监听函数返回值，都将执行最终回调
+
+```javascript
+class AsyncParallelBailHook {
+  constructor (args) {
+    if (!Array.isArray(args)) args = []
+    this.args = args
+    this.taps = []
+  }
+
+  tapAsync (name, handler) {
+    this.taps.push({ name, handler, type: 'async' })
+  }
+
+  tapPromise (name, handler) {
+    this.taps.push({ name, handler, type: 'promise' })
+  }
+
+  callAsync (...args) {
+    const cb = args.pop()
+    const params = args.splice(0, this.args.length)
+    this.execute(params, cb)
+  }
+
+  promise (...args) {
+    const params = args.splice(0, this.args.length)
+    return new Promise((resolve, reject) => {
+      this.execute(params, resolve, reject)
+    })
+  }
+
+  execute (args, cb, reject) {
+    const done = (err, res) => {
+      if (err && reject) return reject()
+      if (err && cb) return cb()
+      if (res && cb) return cb()
+    }
+    this.taps.forEach(tap => {
+      const { handler, type } = tap
+      if (type === 'promise') {
+        handler(...args).then(res => done(null, res), err => done(err))
+      } else {
+        handler(...args, done)
+      }
+    })
+  }
+}
+
+module.exports = AsyncParallelBailHook
+
+```
+
+```javascript
+
+// const { AsyncParallelBailHook } = require('tapable')
+const AsyncParallelBailHook = require('./lib/AsyncParallelBailHook.js')
+
+class Test {
+  constructor () {
+    this.hook = {
+      async: new AsyncParallelBailHook(['name'])
+    }
+  }
+
+  /**
+   * 监听事件
+   */
+  listener () {
+    this.hook.async.tapAsync('webpack', function (name, callback) {
+      setTimeout(() => {
+        console.log(`${name}：`, '学习 webpack')
+        callback()
+      }, 1000)
+    })
+
+    this.hook.async.tapAsync('node', function (name, callback) {
+      setTimeout(() => {
+        console.log(`${name}：`, '学习 node')
+        callback()
+      }, 1000)
+    })
+
+    this.hook.async.tapPromise('node', function (name) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(`${name}：`, '学习 tapable')
+          reject(new Error('promise熔断型HOOK'))
+          // resolve()
+        }, 1000)
+      })
+    })
+  }
+
+  /**
+   * 触发事件
+   */
+  trigger () {
+    this.hook.async.callAsync('greenlotus', function () {
+      console.log('*********** greenlotus 学习完毕 ************')
+    })
+
+    this.hook.async.promise('ypl').then(res => {
+      console.log('*********** ypl 学习完毕 ************')
+    })
+  }
+}
+
+const test = new Test()
+test.listener()
+test.trigger()
+
+```
+
+#### 7、AsyncSereisHook 
 
 AsyncSereisHook 异步串行Hook，就是等上一个异步监听函数执行结果已出才执行下一个异步监听函数
 
@@ -521,7 +636,7 @@ test.call()
 test.callPromise()
 ```
 
-#### 6、AsyncSereisBailHook 
+#### 8、AsyncSereisBailHook 
 
 AsyncSereisBailHook 异步串行的熔断Hook，如果上一个监听函数返回了非undefined参数，那么就中断执行下一个函数
 
@@ -655,7 +770,7 @@ test.callPromise()
 
 
 
-#### 7、AsyncSereisWaterfallHook 
+#### 9、AsyncSereisWaterfallHook 
 
 AsyncSereisWaterfallHook 异步串行的瀑布Hook，如果上一个函数有返回结果，那么它将作为下一个执行函数的的第一个参数
 
