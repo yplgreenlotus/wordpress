@@ -64,6 +64,14 @@ if (options.plugins && Array.isArray(options.plugins)) {
 }
 ```
 
+3、Compiler常用的Hook的监听时间节点总结
+
+![](./img/plugin_01.png)
+
+4、Compilation 常用的Hook的监听时间节点总结
+
+![](./img/plugin_02.png)
+
 
 
 
