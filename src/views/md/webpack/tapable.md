@@ -672,7 +672,7 @@ class AsyncSeriesBailHook {
   execute (args, cb, reject) {
     let index = 0
     const done = (err, ret) => {
-      if (err) return reject && reject(err)
+      if (err) return reject ? reject(err) : cb()
       if (ret) return cb && cb()
       next()
     }
@@ -896,6 +896,10 @@ test.call()
 test.callPromise()
 
 ```
+
+#### 10、总结
+
+![](./img/tapable_01.png)
 
 
 
