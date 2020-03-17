@@ -8,6 +8,9 @@ export default [{
   name: 'webpack loader',
   path: '/webpack/loader'
 }, {
-  name: 'tapable',
+  name: 'Tapable库',
   path: '/webpack/tapable'
+}, {
+  name: 'webpack plugin',
+  path: '/webpack/plugin'
 }]
