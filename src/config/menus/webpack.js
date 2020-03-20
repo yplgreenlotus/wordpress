@@ -1,16 +1,22 @@
 export default [{
-  name: 'webpack简介',
+  name: 'Webpack简介',
   path: '/webpack/introduce'
 }, {
-  name: 'webpack配置',
+  name: 'Webpack 基础配置',
   path: '/webpack/config'
 }, {
-  name: 'webpack loader',
+  name: 'Webpack Loader',
   path: '/webpack/loader'
 }, {
-  name: 'Tapable库',
+  name: 'Webpack 依赖插件库',
   path: '/webpack/tapable'
 }, {
-  name: 'webpack plugin',
+  name: 'Webpack 插件',
   path: '/webpack/plugin'
+}, {
+  name: 'Webpack 打包优化',
+  path: '/webpack/optimization'
+}, {
+  name: 'Webpack 打包流程',
+  path: '/webpack/process'
 }]

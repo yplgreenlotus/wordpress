@@ -1,55 +1,57 @@
 # Webpack loader
 
-默认情况下 webpack 只能处理 Javascript 代码，那如果要处理其他类型文件该怎么办呢 ？那我们是否可以给这些类型的文件内容套上一个js的外壳，让 webpack 能够识别是否就解决了问题呢 ？ 答案是肯定的
+默认情况下 webpack 只能处理 Javascript 代码，而在我们使用 webpack 的过程中它几乎是无所不能，这其中原因就是我们配置了各种各样的loader
 
 #### 1、什么是loader ？
 
-在 webpack 中 loader 是一个资源转换加载器，它可以将Javascript之外的任何静态资源进行转换打包加载。如果从实现上来讲loader就是一个遵循common规范的函数导出对象，webapck 会使用 loader runner 来调用这个函数 ，并且把相关的资源内容、参数传给它 ，函数接受到这些参数之后进行相关的转换处理，最后返回出去
+在 webpack 中 loader 是一个资源转换器，它可以将Javascript之外的任何静态资源进行打包转换，经过一个个loader处理之后得到我们最终想要的资源
 
-#### 2、loader的分类
+#### 2、loader 的写法
 
-1、同步异步的维度：loader 可以分为 同步loader 与 异步loader
+同步loader
 
 ```javascript
-// 同步 loader
-module.exports = function(resource,other){
+// 写法一：直接返回
+module.exports = function(source,other){
   return transform(resource)
 }
 
-// 同步 loader 也可以 调用 this.callback 返回，但是后面 必须 return undefined
-module.exports = function(resource,other){
-  this.callback(null,transform(resource),other)
+// 写法二：利用 this.callback 返回 ，之后必须 return undefind
+module.exports = function(source,other){
+  this.callback(null,transform(source),other)
   return
 }
-
-// 异步 loader
-module.exports = function(resource,other){
-  const callback = this.async()
-  transform(resource,function(err,result){
-    if(err){
-      callback(err)
-    }else{
-      callback(null,result,other)
-    }
-  })
-}
-
 ```
 
-2、执行顺序的维度有 pre loader、normal loader 、post loader等 3 种
+异步loader
 
 ```javascript
-// 1、从右到左 或者 从下到上 less-loader -> postcss-loader -> css-loader -> vue-style-loader
+module.exports = function(source,other){
+   const cb  = this.async()
+   transform(source,(err,result) => { 
+     if(err) return cb(err)
+     cb(null,result)
+   })
+}
+```
+
+#### 3、loader 的执行顺序
+
+1、从右到左 css-loader -> postcss-loader -> less-loader
+
+```javascript
 {
   test: /\.less$/,
-  use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'less-loader']
+  use: ['css-loader', 'postcss-loader', 'less-loader']
 }
-// 或者
+```
+
+2、从下到上 css-loader -> postcss-loader -> less-loader
+
+```javascript
 {
   test: /\.less$/,
   use: [{
-   loader:'vue-style-loader'
-  },{
    loader:'css-loader'
   },{
    loader:'postcss-loader'
@@ -57,9 +59,35 @@ module.exports = function(resource,other){
    loader:'less-loader'
   }]
 }
-// 通过 onforce
-
 ```
 
-3、内联loader
+3、从执行顺序维度其实分为4种loader，分别是：pre、normal、inline、post loader , 默认情况都是 normal loader 按上面两种说的顺序执行，但是通过 onforce 属性指定类型之后不一样了，得按 pre、normal、inline、post loader 的顺序执行
+
+```javascript
+{
+  test: /\.less$/,
+  use: [{
+   loader:'postcss-loader' // 不指定，默认 normal loader
+  },{
+   onforce:'post',
+   loader:'less-loader'
+  }{
+   onforce:'pre', 
+   loader:'css-loader'
+  },]
+}
+```
+
+#### 4、内联 loader (inline loader)
+
+#### 5、loader-util
+
+#### 6、loader-runner
+
+#### 7、loader 的内部机制
+
+
+
+
+
 

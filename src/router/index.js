@@ -6,7 +6,7 @@ import Exception from '@/router/exception/index'
 import Main from '@/router/main/index'
 
 Vue.use(VueRouter)
-console.log(Main)
+
 const routes = [{
   path: '/',
   name: 'mainLayout',
