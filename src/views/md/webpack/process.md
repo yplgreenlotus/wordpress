@@ -109,7 +109,9 @@ Webpack-cli 是 Webpack 的命令行工具包 ，打开 Webpack-cli 工程下的
 
 #### 4、Webpack 构建过程
 
-调用 compiler.run 方法就启动了 webpack 构建流程 ，run 方法里面会调动 compile 方法启动代码编译，compiler 主要管着 启动与收尾的工作，比如 beforeRun、run 、thisCompliation、compliation 、make 、emit、done 等很多Hook，但是具体构建的细节都是在 compliation 里面完成
+调用 compiler.run 方法就启动了 webpack 构建流程 ，run 方法里面会调动 compile 方法启动代码编译，compiler 主要管着 启动与收尾的工作，比如 beforeRun、run 、thisCompliation、compliation 、make 、emit、done 等很多Hook，但是具体构建的细节都是在 compliation 里面完成，参考源于网络的流程图片：
+
+![](./img/process_01.jpg)
 
 
 

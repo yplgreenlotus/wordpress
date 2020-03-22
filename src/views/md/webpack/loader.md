@@ -63,8 +63,7 @@ module.exports = function(source,other){
 }
 ```
 
-3、从执行顺序维度其实分为4种loader，分别是：pre、normal、inline、post loader , 默认情况都是 normal loader 按上面两种说的顺序执行，但是通过 onforce 属性指定类型之后不一样了，得按 pre、normal、inline、post loader 的顺序执行
-
+3、从执行顺序维度来讲其实可以分为3种loader，分别是：preLoader、normalLoader、postLoader , 不指定默认情况都是 normalLoader 从右到左的顺序执行，但是通过 onforce 属性指定执行顺序，指定之后执行顺序分别是：preLoader > normalLoader > postLoader
 ```javascript
 {
   test: /\.less$/,
@@ -80,7 +79,36 @@ module.exports = function(source,other){
 }
 ```
 
-#### 4、内联 loader (inline loader)
+#### 4、内联 loader (inlineLoader)
+
+inlineLoader 其实个人用的比较少，一般的情况下它的执行顺序其实是在 normalLoader、postLoader 中间
+
+1、基本使用
+
+```javascript
+
+import 'xxx-loader!./src/main.js'
+
+```
+
+2、但是可以通过在前面配置一些标识符让 webapck.config.js 文件的配置的loader是否可执行
+
+a、!  忽略 webpack.config 配置当中符合规则的 normalLoader
+
+b、-! 忽略 webpack.config 配置当中符合规则的 preLoader/normalLoader
+
+c、!! 忽略 webpack.config 配置当中符合规则的 postLoader/preLoader/normalLoader
+
+例如：
+
+```javascript
+import '!b-loader!a-loader?a=b!./src/main.js'
+
+import '-!b-loader!a-loader?a=b!./src/main.js'
+
+import '!!b-loader!a-loader?a=b!./src/main.js'
+```
+
 
 #### 5、loader-utils
 
