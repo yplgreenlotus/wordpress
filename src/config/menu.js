@@ -2,7 +2,7 @@ import http from './menus/http'
 import https from './menus/https'
 import webpack from './menus/webpack'
 import introduce from './menus/introduce'
-// import javascript from './menus/javascript'
+import javascript from './menus/javascript'
 // import node from './menus/node'
 // import vue from './menus/vue'
 // import react from './menus/react'
@@ -13,6 +13,10 @@ export default [{
   name: '简介',
   path: '/introduce',
   children: [...introduce]
+}, {
+  name: 'javascript',
+  path: '/javascript',
+  children: [...javascript]
 }, {
   name: 'http',
   path: '/http',
@@ -26,12 +30,7 @@ export default [{
   path: '/webpack',
   children: [...webpack]
 }
-
 // , {
-//   name: 'javascript',
-//   path: '/javascript',
-//   children: [...javascript]
-// }, {
 //   name: 'dom',
 //   path: '/dom',
 //   children: [...node]

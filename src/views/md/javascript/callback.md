@@ -1,22 +1,73 @@
----
-description: >-
-  异步其实是相对于同步来说的，其实我个人觉得可以用 串行 与 并行 来 理解它，例如：同步就是 A、B、C必须依次执行，异步就是： A、B、C
-  各自执行相互不影响。
----
 
-# introduction
 
-#### 异步
+# Callback
 
-在JavaScript的世界里面是以单线程的方式运行，然后现实是在单线程的世界里面，有很多场景是满足不了用户需求的。比如：在 js 存在有网络、事件等交互情况，必须通过异步来处理，当然业内对异常处理的手段也是一直在迭代更新，在异步的发展过程中总体来讲可以分如下几个阶段：
+即回调函数，是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用为调用它所指向的函数时，我们就说这是回调函数
 
-1、callback 阶段
+#### 1、示例
 
-2、promise 阶段
+Ajax 请求是最经典的异步案例，所以在示例回调的同时，温习下 XmlHttpRequest 对象的使用
 
-3、generator 阶段
+```javascript
+function ajax(url, data = {}, success, fail) {
+  const request = new XMLHttpRequest()
+  // 监听请求状态
+  // 同步可以省去额外的 onreadystatechange 代码
+  request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      if (request.status === 200) {
+        success && success(request.responseText)
+      } else {
+        fail && fail(request.status)
+      }
+    }
+  }
+  // 方法初始化一个请求
+  // true 表示异步,false表示同步, XMLHttpRequest默认异步
+  request.open('POST', url, true)
+  // post 请求必须设置
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  // 请求主体参数，GET请求可以设置为null
+  request.send('a=123&b=456')
+}
 
-4、async 阶段 （终结阶段）
+ajax('https://coding.imooc.com/class/ajaxbigdatacourserecommend', {}, function (res) {
+  console.log(res)
+}, function (err) {
+  console.log(err)
+})
+```
+
+#### 2、示例
+
+```javascript
+const url = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend'
+const url2 = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend2'
+const url3 = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend3'
+const url4 = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend4'
+const url5 = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend5'
+// ...
+
+ajax(url, function (res) {
+  ajax(url2, res, function (res2) {
+    ajax(url3, res2, function (res3) {
+      ajax(url4, res3, function (res4) {
+        ajax(url5, res4, function (res5) {
+          // ...
+        })
+      })
+    })
+  })
+})
+
+```
+
+看到上面的示例你不知你第一感觉是什么 ？ 如何相互依赖嵌套N层，那这样串行的回调还有完没完，
+
+这就是所谓的 callback 回调地狱 问题。一旦业务逻辑复杂，估计人都晕菜了，而且维护成本也比较高，
+
+串行嵌套多了之后，代码并不是很优雅，针对这些痛点，这时 promise 粉墨登场了！！！
+
 
 
 

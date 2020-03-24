@@ -1,140 +1,281 @@
----
-description: >-
-  Promise 表示一个异步操作的最终结果，与之进行交互的方式主要是 then 方法，该方法注册了两个回调函数，用于接收 promise 的终值或本
-  promise 不能执行的原因。当初为了解决“回调地狱”问题，提出了Promise对象，后来被加入了ES6标准！！！
----
+# generator
 
-# promise
+#### 1、迭代器（迭代器）
 
-#### 1、示例
-
-首先要对  Promise 进行说明，先看下它的用法：
+首先我们来看一段代码
 
 ```javascript
-const fetch = require('node-fetch')
-new Promise((resolve, reject) => {
-  const promise = fetch('https://coding.imooc.com/class/ajaxbigdatacourserecommend')
-  promise.then(res => {
-    resolve(res)
-  }).catch(err => {
-    reject(err)
-  })
-}).then(data => {
-  console.log(data)
-}).catch(err => {
-  throw err
-})
 
-```
-
-根据上面的使用，我们来分析 Promise 的使用特征：
-
-首先：通过 new 关键字 实例化了一个 Promise 对象；
-
-其次：Promise 构造方法 传入了 一个 函数，函数里面有两个参数 ，分别是：resovle , reject
-
-再次：Promise 实例 通过 then 方法 给 自己 添加了一个回调
-
-最后：Promise 构造方法 传入的函数体里面根据业务逻辑执行：resolve 或 reject 回调
-
-#### 接着我们通过上面的描述特征来实现一个简单的 Promise 对象：
-
-```javascript
-const PENDING = 'pending'
-const RESOLVED = 'resolved'
-const REJECTED = 'rejected'
-const FUNCTION = 'function'
-
-class GreenPromise {
-  constructor(fn) {
-    // promise 状态转换：
-    // 可由：padding ---> resolved
-    // 可由：padding ---> rejected
-    // 但是返过来不行
-    this.status = PENDING
-    // promise 实际的 value
-    this.value = null
-    // 通过then方法收集的resovle回调队列
-    this.callbackResovles = []
-    // 通过then方法收集的reject回调队列
-    this.callbackRejects = []
-    
-    const resolve = (data) => {
-      if (this.status === PENDING) {
-        this.status = RESOLVED
-        this.value = data
-        this.callbackResovles.forEach(func => {
-          func(this.value)
-        })
+function makeIterator(arr) {
+  let nextIndex = 0
+  return {
+    next: () => {
+      if (nextIndex < arr.length) {
+        return { value: arr[nextIndex++], done: false }
+      } else {
+        // 用 done 标识当前这个迭代器是否完成
+        return { value: undefined, done: true }
       }
-    }
-    const reject = (error) => {
-      this.status = REJECTED
-      this.value = error
-      this.callbackRejects.forEach(func => {
-        func(this.value)
-      })
-    }
-    // 这里防止执行的 fn 执行的时候异常，用try/catch 捕获
-    try {
-      fn(resolve, reject)
-    } catch (err) {
-      reject(err)
-    }
-  }
-  then(onResolved, onRejected) {
-    // 避免 then(123) 这样用报错
-    onResolved = typeof onResolved === FUNCTION ? onResolved : data => data
-    // 避免 then(123) 这样用报错
-    onRejected = typeof onRejected === FUNCTION ? onRejected : err => {
-      throw err
-    }
-        
-    // 用法1：执行 resolve 的时候（callbackResovles 应该是空的），
-    // then 方法还没有执行，当then执行后，
-    // status 的状态已经是RESOLVED，所以这里直接调用即可
-    if (this.status === RESOLVED) {
-      onResolved(this.value)
-    }
-    
-    // 用法 1 , 同上
-    if (this.status === REJECTED) {
-      onRejected(this.value)
-    }
-    
-    // 用法 2：由于 resvole 被延迟 1000 ms 执行
-    // 此时 this.status 的状态为PENDING
-    // 故将回调事件保存到回调 队列中
-    if (this.status === PENDING) {
-      this.callbackResovles.push(onResolved)
-      this.callbackRejects.push(onRejected)
     }
   }
 }
 
-// 用法 1
-new GreenPromise((resolve, reject) => {
-  if (4 > 3) {
-    resolve(true)
-  } else {
-    reject(false)
-  }
-}).then(data => {
-  console.log(data)
-})
+const arr = ['起床', '吃早餐', '上班', '下班', '回家']
 
-// 用法 2
-// 这样用会出现 then 方法 在执行时，this.status 的状态为 padding
-new GreenPromise((resolve, reject) => {
-  setTimeout(() => {
-    resolve(true)
-  }, 1000)
-}).then(res => {
-  console.log(res)
-})
+const iterator = makeIterator(arr)
+console.log('**************生活节奏****************')
+console.log('7点整：', iterator.next().value)
+console.log('8点整：', iterator.next().value)
+console.log('9点整：', iterator.next().value)
+console.log('18点整：', iterator.next().value)
+console.log('19点整：', iterator.next().value)
+console.log('20点整：', iterator.next().value)
+
+**************生活节奏****************
+7点整： 起床
+20 8点整： 吃早餐
+21 9点整： 上班
+22 18点整： 下班
+23 19点整： 回家
+24 20点整： undefined
 ```
 
-## 
+#### 2、生成器（generator）
 
+生成器 名故思意 就是一个生产东西的容器， 生成器函数就是可以返回迭代器的函数，本质还是在操作迭代器，只不过表面通过生成器来完成这件事情，接下来我们来看下示例代码：
 
+```javascript
 
+function* makeIterator(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    yield arr[i]
+  }
+}
+const arr = ['起床', '吃早餐', '上班', '下班', '回家']
+const gen = makeIterator(arr)
+
+console.log('**************生活节奏****************')
+console.log('7点整：', gen.next().value)
+console.log('8点半：', gen.next().value)
+console.log('9点整：', gen.next().value)
+console.log('18点整：', gen.next().value)
+console.log('19点整：', gen.next().value)
+console.log('20点整：', gen.next().value)
+
+**************生活节奏****************
+19 7点整： 起床
+20 8点整： 吃早餐
+21 9点整： 上班
+22 18点整： 下班
+23 19点整： 回家
+24 20点整： undefined
+
+```
+
+#### 3、对比结论
+
+对比 上面 的 迭代器 、生成器你会发现他们产生的结果是一毛一样的，所以生成器的本质就是返回迭代器，生成器 出现 就为了简化 迭代器，这就是以上最想要表达主要信息。
+
+#### 4、迭代器的使用
+
+示例1：
+
+```javascript
+
+function* generator_1() {
+  let a = yield 1
+  console.log('a', a)
+  let b = yield 2
+  console.log('b', b)
+  let c = yield 3
+  console.log('c', c)
+  return 0
+}
+
+let it = generator_1()
+
+console.log("*************执行结果****************")
+console.log('excute one: ', it.next())
+console.log('excute two: ', it.next())
+console.log('excute three: ', it.next())
+console.log('excute four: ', it.next())
+
+*************执行结果****************
+
+excute one:  {value: 1, done: false}
+a undefined
+
+excute two:  {value: 2, done: false}
+b undefined
+
+excute three:  {value: 3, done: false}
+c undefined
+
+excute four:  {value: 0, done: true}
+
+```
+
+看到上面的结果，此时你肯定会大吃一惊 ， a 、b、c  的值为啥是 undefined  ？ tell me why ?  
+
+#### generator 函数赋值行为：
+
+其实根据上面代码看来有一定的误导性 ， 这里我举例说明：
+
+如： let xx = yield yy  ，以 yield 为中心：
+
+yield 左边表达式为：let xx = 
+
+yield 右边表达式为：yy
+
+其实 yield 左边表达式 值 并 不是通过 yield 右边表达式来赋值，而是 it.next\(\) 方法传递的参数来赋值的，
+
+很显然上面的next\( \)方法都没有传参，所以  a 、b、c  的值为 undefind 并不奇怪。
+
+#### generator 函数执行流程：
+
+首先：let it = generator\_1\(\) 拿到迭代器
+
+it.next\(\) 第一次调用：只执行了  yield 1
+
+it.next\(\)  第二次调用：先执行  let a = 表达式赋值操作，在执行  console ,  接着执行 yield 2  ，让后停止；
+
+it.next\(\)  第三次调用：先执行  let b = 表达式赋值操作，在执行  console ,  接着执行 yield 3  ，让后停止；
+
+it.next\(\)  第四次调用：先执行  let  = 表达式赋值操作，在执行  console ,  然后结束 return 
+
+#### 示例2：异步generator函数
+
+根据 示例 1  的流程 来梳理次粒子，就很好理解了
+
+```javascript
+
+const co = require('co')
+const fetch = require('node-fetch')
+
+function ajax() {
+  fetch('https://coding.imooc.com/class/ajaxbigdatacourserecommend').then(res => {
+    // 第二次执行next()，并且把返回的值通过next传递进去
+    // 此次执行next,传递进去的 res 会赋值给 result , 然后执行 result.json 之后暂停
+    return it.next(res).value
+  }).then(params => {
+    // 第三次执行next()，并且把为第二次执行 next 返回值 params 传进去
+    // 此次执行next,传递进去的 params 会赋值给 json, 然后执行console.log(json.data[0])
+    it.next(params)
+  })
+}
+
+function* generator_2() {
+  const result = yield ajax()
+  const json = yield result.json()
+  console.log(json.data[0])
+}
+// 拿到迭代器
+const it = generator_2()
+// 第一次执行next()
+it.next()
+```
+
+#### 5、CO 库
+
+通过上面的 generator 例子，大家有没有发现一个问题，那就是要怎么样才知道一个 generator 函数行
+
+要执行多少次 next 方法呢 ？
+
+大名鼎鼎 的 co 库 就是为了解决这个问题而生的，它出自于tj（node社区神一样的人物）大神之手，接下
+
+来我们来看下  co 库 如何使用 ：
+
+```javascript
+npm install co -S
+```
+
+```javascript
+const co = require('co')
+const fetch = require('node-fetch')
+const url = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend'
+
+/**
+* co 本身就一个函数，接收一个 generator 函数为参数 ，
+* 试图将 function、 promise、generator、array 、object 转换成 promise 返回
+*/
+
+co(function* () {
+  const result = yield fetch(url)
+  const res = yield result.json()
+  console.log(res.data[0])
+})
+
+```
+
+CO 的原理
+
+```javascript
+function* gen() {
+  const url = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend'
+  const result = yield fetch(url)
+  const res = yield result.json()
+  console.log(res.data[0])
+}
+// 简单粗暴的解释 co 原理
+function excute(generator) {
+  const iterator = generator()
+  const promsie = iterator.next().value
+  promsie.then(res => {
+    const promise2 = iterator.next(res).value
+    promise2.then(data => {
+      iterator.next(data)
+    })
+  })
+}
+// 执行
+excute(gen)
+
+```
+
+```javascript
+function* gen() {
+  const url = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend'
+  const result = yield fetch(url)
+  const res = yield result.json()
+  console.log(res.data[0])
+}
+
+// 递归 next 
+function next(it, promise, done) {
+  if (promise instanceof Promise) {
+    if (done) {
+      promise.then(res => {
+        const result = it.next(res)
+        const done = result && !result.done
+        if (done) {
+          // 递归
+          next(it, result.value, done)
+        }
+      })
+    }
+  } else {
+    const result = it.next()
+    const done = result && !result.done
+    if (done) {
+      // 递归
+      next(it, result.value, done)
+    }
+  }
+}
+
+function run(generator) {
+  const iterator = generator()
+  // 递归
+  next(iterator)
+}
+// 执行
+run(gen)
+```
+
+总结：generator 是 es6 推出的特性，其实从 co 库里面执行的代码就已经能够找的 async / await 的影子
+
+在 es7 推出之后，async / await 基本就已经取代了 generator 函数，但并不代表他就已经可以退出
+
+历史舞台，react-saga 就基于generator 函数实现，并且他还表明 async / await 并不能彻彻底底的
+
+取代 generator 函数。

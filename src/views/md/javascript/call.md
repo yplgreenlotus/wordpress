@@ -2,7 +2,6 @@
 
 # call、apply、bind 原理
 
-## 1、call 与 apply
 
 举个粒子：
 

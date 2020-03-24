@@ -1,11 +1,7 @@
----
-description: >-
-  面向对象编程（Object Oriented Programming）简称 OOP ，是计算机编程技术发展到一定阶段的产物 。
-  它是一种符合人类思考的方式编程思想，用对象方式来模拟现实世界的一切，从而实现将复杂的事情简单化。目前，许多流行的编程语言（如Java，JavaScript，C＃，C+
-  +，Python，PHP，Ruby和Objective-C）都支持面向对象编程（OOP）。
----
-
-# 概述
+# 面向对象编程
+面向对象编程（Object Oriented Programming）简称 OOP ，是计算机编程技术发展到一定阶段的产物 。
+它是一种符合人类思考的方式编程思想，用对象方式来模拟现实世界的一切，从而实现将复杂的事情简单化。目前，许多流行的编程语言（如Java，JavaScript，C＃，C+
++，Python，PHP，Ruby和Objective-C）都支持面向对象编程（OOP）。
 
 ## 1、面向过程编程
 

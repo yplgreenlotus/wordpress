@@ -1,6 +1,3 @@
----
-description: 原型继承
----
 
 # Prototype
 
