@@ -288,13 +288,11 @@ function co (it) {
       if(done){
         resolve(value)
       }else{
-        Promise.resolve(value).then( res => {
-          next(res)
-        },reject)
+        Promise.resolve(value).then(res => next(res),reject)
       }
     }
     // 第一个参数有没有，没有任何意义
-    next()
+    next(undefined)
   })
 }
 
