@@ -3,7 +3,8 @@ import https from './menus/https'
 import webpack from './menus/webpack'
 import introduce from './menus/introduce'
 import javascript from './menus/javascript'
-// import node from './menus/node'
+import node from './menus/node'
+import es6 from './menus/es6'
 // import vue from './menus/vue'
 // import react from './menus/react'
 // import dataStructure from './menus/dataStructure'
@@ -18,6 +19,10 @@ export default [{
   path: '/javascript',
   children: [...javascript]
 }, {
+  name: 'es6',
+  path: '/es6',
+  children: [...es6]
+}, {
   name: 'http',
   path: '/http',
   children: [...http]
@@ -29,6 +34,10 @@ export default [{
   name: 'webpack',
   path: '/webpack',
   children: [...webpack]
+}, {
+  name: 'node',
+  path: '/node',
+  children: [...node]
 }
 // , {
 //   name: 'dom',
