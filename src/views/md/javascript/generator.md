@@ -95,23 +95,23 @@ function* generator_1() {
 let it = generator_1()
 
 console.log("*************执行结果****************")
-console.log('excute one: ', it.next())
-console.log('excute two: ', it.next())
-console.log('excute three: ', it.next())
-console.log('excute four: ', it.next())
+console.log('execute one: ', it.next())
+console.log('execute two: ', it.next())
+console.log('execute three: ', it.next())
+console.log('execute four: ', it.next())
 
 *************执行结果****************
 
-excute one:  {value: 1, done: false}
+execute one:  {value: 1, done: false}
 a undefined
 
-excute two:  {value: 2, done: false}
+execute two:  {value: 2, done: false}
 b undefined
 
-excute three:  {value: 3, done: false}
+execute three:  {value: 3, done: false}
 c undefined
 
-excute four:  {value: 0, done: true}
+execute four:  {value: 0, done: true}
 
 ```
 
@@ -217,10 +217,10 @@ function* gen() {
   console.log(res.data[0])
 }
 // 简单粗暴的解释 co 原理
-function excute(generator) {
+function execute(generator) {
   const iterator = generator()
-  const promsie = iterator.next().value
-  promsie.then(res => {
+  const promise = iterator.next().value
+  promise.then(res => {
     const promise2 = iterator.next(res).value
     promise2.then(data => {
       iterator.next(data)
@@ -228,7 +228,7 @@ function excute(generator) {
   })
 }
 // 执行
-excute(gen)
+execute(gen)
 
 ```
 
@@ -270,6 +270,36 @@ function run(generator) {
 }
 // 执行
 run(gen)
+```
+
+```javascript
+
+function* gen() {
+  const url = 'https://coding.imooc.com/class/ajaxbigdatacourserecommend'
+  const result = yield fetch(url)
+  const res = yield result.json()
+  console.log(res.data[0])
+}
+
+function co (it) {
+  return new Promise((resolve,reject) => {
+    function next (data) {
+      const { value , done } = it.next(data)
+      if(done){
+        resolve(value)
+      }else{
+        Promise.resolve(value).then( res => {
+          next(res)
+        },reject)
+      }
+    }
+    // 第一个参数有没有，没有任何意义
+    next()
+  })
+}
+
+co(gen())
+
 ```
 
 总结：generator 是 es6 推出的特性，其实从 co 库里面执行的代码就已经能够找的 async / await 的影子
